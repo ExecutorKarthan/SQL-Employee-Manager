@@ -24,6 +24,7 @@ const seedDatabase = async () => {
 
   await Role.bulkCreate(roleSeedData);
   
+
   console.log('All Seeds Planted'); 
 
   process.exit(0);

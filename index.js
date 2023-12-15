@@ -1,7 +1,7 @@
 const inquirer = require(`inquirer`);
 const mysql = require(`mysql2`);
 const dbFunctions = require('./utils/dbFunctions.js')
-const sequelize = require('./config/connection.js');
+const sequelize = require('./config/Connection.js');
 
 async function addDept(con){
     await inquirer
@@ -89,8 +89,8 @@ async function main() {
 
 //dbFunctions.seedDB(con)
 
-sequelize.sync({ force: true }).then(() => {
+/*sequelize.sync({ force: true }).then(() => {
     app.listen(PORT, () => console.log('Now listening'));
     main();
   });
-console.log("Program terminated")
+console.log("Program terminated")*/

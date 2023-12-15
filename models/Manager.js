@@ -1,5 +1,5 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require(`../config/Connection`);
+const { Model, DataTypes} = require('sequelize');
+const sequelize = require('../config/Connection');
 
 class Manager extends Model {}
 
@@ -22,13 +22,17 @@ Manager.init(
     role_id:{
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    dept_id:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
     }
   }, 
   {
     sequelize,
     timestamps: false,
     underscored: true,
-    modelName: 'manager'
+    modelName: 'manager',
   }
 );
 
