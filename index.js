@@ -1,52 +1,75 @@
 const inquirer = require(`inquirer`);
 const mysql = require(`mysql2`);
 const dbFunctions = require('./utils/dbFunctions.js')
-const fs = require('node:fs');
+const sequelize = require('./config/connection.js');
 
-
-async function init(){
+async function addDept(con){
     await inquirer
     .prompt([
         {
-            type: "list",
-            name: "action",
-            message: "What would you like to do?",
-            choices: ["View all departments", 
-            "View all roles", 
-            "View all employees",
-            "Add a department",
-            "Add a role", 
-            "Add an employee",
-            "Update an employee role",
-            "Exit"
-            ]
+            type: "input",
+            name: "dept_name",
+            message: "What is the new department's name?",
+        },
+        {
+            type: "input",
+            name: "dept_id",
+            message: "What is the new department's id?",
         }
     ])
-    .then((selection) =>{
+    .then((responses) =>{
+        console.log(responses)
+        dbFunctions.add(con, `department`, responses)
+    })
+}
+
+async function main() {      
+    
+    const con = mysql.createConnection(
+        {
+          host: processedData.host,
+          user: processedData.user,
+          password: processedData.password,
+          database: processedData.database,
+        },
+        console.log(`Connected to SQL.`)
+      );
+
+    var loop = true;
+
+    while(loop){
+        const selection = await inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "action",
+                message: "What would you like to do?",
+                choices: ["View all departments", 
+                "View all roles", 
+                "View all employees",
+                "Add a department",
+                "Add a role", 
+                "Add an employee",
+                "Update an employee role",
+                "Exit"
+                ]
+            }
+        ])
         if(selection.action == "View all departments"){
             //List all in database
-            dbFunctions(con, `departments`)
+            console.log("Show the departments")
+            dbFunctions.queryText(con, `department`)
         }
         if(selection.action == "View all roles"){
-            dbFunctions(con, `roles`)
+            dbFunctions.queryText(con, `role`)
             //List all in database
         }
         if(selection.action == "View all employees"){
-            dbFunctions(con, `employees`)
+            dbFunctions.queryText(con, `employee`)
             //List all in database
         }
-        if(selection.action == "Add a department"){
-            const deptName = await input(
-                {
-                    message: "What is the new department's name?"
-                });
-            const deptID = await input(
-                {
-                    message: "What is the new department's ID?"
-                });
-        }
-            console.log(deptName + " and " + deptID)
-            //Add dept to dept table
+        if(initialQ.action == "Add a department"){
+            await addDept(con);   
         }
         if(selection.action == "Add a role"){
             //add role to role table
@@ -60,29 +83,14 @@ async function init(){
         if(selection.action == "Exit"){
             loop = false;
         }
-    })
     return loop;
-}
-
-async function main() {      
-    var loop = true;
-
-    while(loop){
-        loop = await init()
     }
 }
 
-const processedData = JSON.parse(fs.readFileSync('./credentials.json'));
-
-const con = mysql.createConnection(
-    {
-      host: processedData.host,
-      user: processedData.user,
-      password: processedData.password,
-    },
-    console.log(`Connected to SQL.`)
-  );
-
 //dbFunctions.seedDB(con)
 
-main(con);
+sequelize.sync({ force: true }).then(() => {
+    app.listen(PORT, () => console.log('Now listening'));
+    main();
+  });
+console.log("Program terminated")

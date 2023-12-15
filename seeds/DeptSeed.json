@@ -1,0 +1,22 @@
+[
+    {
+        "dept_id": 1,
+        "dept_name": "Maintenance"
+    },
+    {
+        "dept_id": 2,
+        "dept_name": "Physics"
+    },
+    {
+        "dept_id": 3,
+        "dept_name": "Chemistry"
+    },
+    {
+        "dept_id": 4,
+        "dept_name": "Biology"
+    },
+    {
+        "dept_id": 5,
+        "dept_name": "Finance"
+    }
+]

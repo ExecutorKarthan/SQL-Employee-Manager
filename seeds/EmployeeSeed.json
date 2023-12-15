@@ -1,0 +1,37 @@
+[
+    {
+        "emp_id": 901,
+        "first_name": "Roger",
+        "last_name": "Rabbit",
+        "role_id": 33,
+        "manager_id": 702
+    },
+    {
+        "emp_id": 902,
+        "first_name": "Bugs",
+        "last_name": "Bunny",
+        "role_id": 33,
+        "manager_id": null
+    },
+    {
+        "emp_id": 903,
+        "first_name": "Conrad",
+        "last_name": "Capsin",
+        "role_id": 22,
+        "manager_id": 122
+    },
+    {
+        "emp_id": 904,
+        "first_name": "Hulk",
+        "last_name": "Hogan",
+        "role_id": 111,
+        "manager_id": null
+    },
+    {
+        "emp_id": 905,
+        "first_name": "Barbra",
+        "last_name": "Gordan",
+        "role_id": 112,
+        "manager_id": null
+    }
+]

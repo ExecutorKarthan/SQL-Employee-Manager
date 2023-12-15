@@ -1,0 +1,20 @@
+[
+    {
+        "role_id": 701,
+        "first_name": "Charles",
+        "last_name": "Xavier",
+        "dept_id": 122
+    },
+    {
+        "role_id": 702,
+        "first_name": "Erik",
+        "last_name": "Lensure",
+        "dept_id": 133
+    },
+    {
+        "role_id": 703,
+        "first_name": "Kitty",
+        "last_name": "Pryde",
+        "dept_id": 144
+    }
+]

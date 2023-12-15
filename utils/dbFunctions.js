@@ -6,7 +6,12 @@ function seedDB(dbCon){
 }
 
 function queryText(dbCon, dataTable){
-    dbCon.query(`SELECT * from ${dataTable}`)
+  console.log(`Query is: SELECT * FROM ${dataTable};`)
+  dbCon.execute(`SELECT * FROM ${dataTable};`, [dataTable],  
+  function(err, results){
+    console.log(err)
+    console.log(results);
+  });
 }
 
 function add(dbCon, tableName, values){
@@ -18,4 +23,4 @@ function add(dbCon, tableName, values){
       });
 }
 
-module.exports ={seedDB, queryText}
+module.exports ={seedDB, queryText, add}
