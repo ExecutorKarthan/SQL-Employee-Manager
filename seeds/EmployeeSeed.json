@@ -2,31 +2,34 @@
     {
         "first_name": "Roger",
         "last_name": "Rabbit",
-        "role_id": 33,
-        "manager_id": 702
+        "role_id": 3,
+        "manager_id": 701
     },
     {
         "first_name": "Bugs",
         "last_name": "Bunny",
-        "role_id": 33,
-        "manager_id": null
+        "role_id": 3,
+        "manager_id": 701
     },
     {
         "first_name": "Conrad",
         "last_name": "Capsin",
-        "role_id": 22,
-        "manager_id": 122
+        "role_id": 2,
+        "manager_id": 702
     },
     {
         "first_name": "Hulk",
         "last_name": "Hogan",
-        "role_id": 111,
-        "manager_id": null
+        "role_id": 4
     },
     {
         "first_name": "Barbra",
         "last_name": "Gordan",
-        "role_id": 112,
-        "manager_id": null
+        "role_id": 5
+    },
+    {
+        "first_name": "Hank",
+        "last_name": "Pymn",
+        "role_id": 1
     }
 ]

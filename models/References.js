@@ -1,25 +1,31 @@
-const Driver = require('./Driver');
-const License = require('./License');
-const Car = require('./Car');
+const Department = require('./Department');
+const Employee = require('./Employee');
+const Manager = require('./Manager');
+const Role = require('./Role');
 
-Driver.hasOne(License, {
-  foreignKey: 'driver_id',
+
+//Create a link where the role model imports an ID from the department model
+Role.hasOne(Department, {
+  foreignKey: 'dept_id',
   onDelete: 'CASCADE',
 });
 
-License.belongsTo(Driver, {
-  foreignKey: 'driver_id',
+Department.belongsTo(Role, {
+  foreignKey: 'dept_id',
 });
 
-// Define a Driver as having many Cars, thus creating a foreign key in the `car` table
-Driver.hasMany(Car, {
-  foreignKey: 'driver_id',
+//Link the role_id to the employee and manager models
+Role.belongsToMany(Employee, {through: 'role_id'})
+Role.belongsToMany(Manager, {through: 'role_id'})
+
+//Create a link where the employee model imports an ID from the manager model
+Manager.hasMany(Employee, {
+  foreignKey: 'manager_id',
   onDelete: 'CASCADE',
-});
+})
 
-// The association can also be created from the Car side
-Car.belongsTo(Driver, {
-  foreignKey: 'driver_id',
-});
+Employee.belongsTo(Manager, {
+    foreignKey: 'manager_id' 
+  })
 
-module.exports = { Driver, License, Car };
+module.exports = { Department, Employee, Manager, Role };

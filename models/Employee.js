@@ -21,11 +21,11 @@ Employee.init(
     },
     role_id:{
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     manager_id:{
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
     }
   }, 
   {

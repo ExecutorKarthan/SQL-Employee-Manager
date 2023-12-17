@@ -23,10 +23,6 @@ Manager.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    dept_id:{
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    }
   }, 
   {
     sequelize,
