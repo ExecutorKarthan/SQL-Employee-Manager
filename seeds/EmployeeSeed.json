@@ -3,19 +3,19 @@
         "first_name": "Roger",
         "last_name": "Rabbit",
         "role_id": 3,
-        "manager_id": 701
+        "manager_id": 1
     },
     {
         "first_name": "Bugs",
         "last_name": "Bunny",
         "role_id": 3,
-        "manager_id": 701
+        "manager_id": 1
     },
     {
         "first_name": "Conrad",
         "last_name": "Capsin",
         "role_id": 2,
-        "manager_id": 702
+        "manager_id": 2
     },
     {
         "first_name": "Hulk",
