@@ -1,7 +1,12 @@
 const inquirer = require(`inquirer`);
 const mysql = require(`mysql2`);
-const dbFunctions = require('./utils/dbFunctions.js')
 const sequelize = require('./config/Connection.js');
+const dbFunctions = require(`./utils/dbFunctions.js`)
+
+const Department = require('./models/Department.js');
+const Employee = require('./models/Employee');
+const Manager = require('./models/Manager');
+const Role = require('./models/Role');
 
 async function addDept(con){
     await inquirer
@@ -25,15 +30,10 @@ async function addDept(con){
 
 async function main() {      
     
-    const con = mysql.createConnection(
-        {
-          host: processedData.host,
-          user: processedData.user,
-          password: processedData.password,
-          database: processedData.database,
-        },
-        console.log(`Connected to SQL.`)
-      );
+    await sequelize.sync({ 
+    })
+    
+    console.log(`Connected to SQL.`)
 
     var loop = true;
 
@@ -56,20 +56,57 @@ async function main() {
             }
         ])
         if(selection.action == "View all departments"){
-            //List all in database
-            console.log("Show the departments")
-            dbFunctions.queryText(con, `department`)
+            let maxWidth = 0;
+            //List all departments
+            const rawData = await Department.findAll(); 
+            var values = [["Department ID", "Department Name"]];
+            for(heading in values[0]){
+                const headingWidth = heading.length
+                if(headingWidth > maxWidth){
+                    maxWidth = headingWidth;
+                }
+            }
+            for(let index = 0; index < rawData.length; index++){
+                const {dept_id, dept_name} = rawData[index].dataValues
+                if(dept_id.length > maxWidth){
+                    maxWidth = dept_id.length;
+                }
+                if(dept_name.length > maxWidth){
+                    maxWidth = dept_name.length;
+                }
+                values.push([dept_id, dept_name]);
+            };
+            dbFunctions.formatTable(values, maxWidth);
         }
         if(selection.action == "View all roles"){
-            dbFunctions.queryText(con, `role`)
-            //List all in database
+            let maxWidth = 0;
+            //List all roles
+            const rawData = await Role.findAll(); 
+            var values = [["Role ID", "Title", "Salary", "Department ID"]]
+            for(let index = 0; index < rawData.length; index++){
+                const {role_id, title, salary, dept_id} = rawData[index].dataValues
+                if(role_id.length > maxWidth){
+                    maxWidth = role_id.length;
+                }
+                if(title.length > maxWidth){
+                    maxWidth = title.length;
+                }
+                if(salary.length > maxWidth){
+                    maxWidth = salary.length;
+                }
+                if(dept_id.length > maxWidth){
+                    maxWidth = dept_id.length;
+                }
+                values.push([role_id, title, salary, dept_id]);
+            };
+            dbFunctions.formatTable(values, maxWidth);
         }
         if(selection.action == "View all employees"){
-            dbFunctions.queryText(con, `employee`)
+            //dbFunctions.queryText(con, `employee`)
             //List all in database
         }
-        if(initialQ.action == "Add a department"){
-            await addDept(con);   
+        if(selection.action == "Add a department"){
+            
         }
         if(selection.action == "Add a role"){
             //add role to role table
@@ -82,15 +119,10 @@ async function main() {
         }
         if(selection.action == "Exit"){
             loop = false;
+            console.log("Program terminated")
+            return loop;
         }
-    return loop;
     }
 }
 
-//dbFunctions.seedDB(con)
-
-/*sequelize.sync({ force: true }).then(() => {
-    app.listen(PORT, () => console.log('Now listening'));
-    main();
-  });
-console.log("Program terminated")*/
+main()
