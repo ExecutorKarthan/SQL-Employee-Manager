@@ -8,26 +8,6 @@ const Employee = require('./models/Employee');
 const Manager = require('./models/Manager');
 const Role = require('./models/Role');
 
-async function addDept(con){
-    await inquirer
-    .prompt([
-        {
-            type: "input",
-            name: "dept_name",
-            message: "What is the new department's name?",
-        },
-        {
-            type: "input",
-            name: "dept_id",
-            message: "What is the new department's id?",
-        }
-    ])
-    .then((responses) =>{
-        console.log(responses)
-        dbFunctions.add(con, `department`, responses)
-    })
-}
-
 async function main() {      
     
     await sequelize.sync({ 
@@ -76,6 +56,7 @@ async function main() {
                 }
                 values.push([dept_id, dept_name]);
             };
+            maxWidth = maxWidth + 5;
             dbFunctions.formatTable(values, maxWidth);
         }
         if(selection.action == "View all roles"){
@@ -99,20 +80,96 @@ async function main() {
                 }
                 values.push([role_id, title, salary, dept_id]);
             };
+            maxWidth = maxWidth + 5;
             dbFunctions.formatTable(values, maxWidth);
         }
         if(selection.action == "View all employees"){
-            //dbFunctions.queryText(con, `employee`)
-            //List all in database
+            let maxWidth = 0;
+            //List all roles
+            const rawData = await Employee.findAll(); 
+            var values = [["Employee ID", "First Name", "Last Name", "Role ID"]]
+            for(let index = 0; index < rawData.length; index++){
+                const {emp_id, first_name, last_name, role_id} = rawData[index].dataValues
+                if(emp_id.length > maxWidth){
+                    maxWidth = emp_id.length;
+                }
+                if(first_name.length > maxWidth){
+                    maxWidth = first_name.length;
+                }
+                if(last_name.length > maxWidth){
+                    maxWidth = last_name.length;
+                }
+                if(role_id.length > maxWidth){
+                    maxWidth = role_id.length;
+                }
+                values.push([emp_id, first_name, last_name, role_id]);
+            };
+            maxWidth = maxWidth + 5;
+            dbFunctions.formatTable(values, maxWidth);
         }
         if(selection.action == "Add a department"){
-            
+            const responses = await inquirer
+            .prompt([
+                {
+                type: "input",
+                name: "dept_name",
+                message: "What is the name of this new department?",
+                }
+            ])
+            await Department.create({dept_name: responses.dept_name})
         }
         if(selection.action == "Add a role"){
-            //add role to role table
+            const responses = await inquirer
+            .prompt([
+                {
+                type: "input",
+                name: "title",
+                message: "What is the title of this role?",
+                },
+                {
+                type: "input",
+                name: "salary",
+                message: "What is the salary of this role?",
+                },
+                {
+                type: "input",
+                name: "dept_id",
+                message: "What is the department id for this role?",
+                },
+            ])
+            await Role.create({title: responses.title, 
+                salary: responses.salary, 
+                dept_id: responses.dept_id})
         }
         if(selection.action == "Add an employee"){
-            //add employee to employee table
+            const responses = await inquirer
+            .prompt([
+                {
+                type: "input",
+                name: "first_name",
+                message: "What is the first name of this employee?",
+                },
+                {
+                type: "input",
+                name: "last_name",
+                message: "What is the last name of this employee?",
+                },
+                {
+                type: "input",
+                name: "role_id",
+                message: "What is the role id for this employee?",
+                },
+                {
+                type: "input",
+                name: "manager_id",
+                message: "What is the manager id for this employee?",
+                }
+            ])
+            await Employee.create({first_name: responses.first_name, 
+                last_name: responses.last_name, 
+                role_id: responses.role_id,
+                manager_id: responses.manager_id
+            })
         }
         if(selection.action == "Update an employee"){
             //change employee data
