@@ -8,39 +8,41 @@ const Manager = require('./models/Manager');
 const Role = require('./models/Role');
 
 //Create a link where the role model imports an ID from the department model
-Role.hasOne(Department, {
+Department.hasMany(Role, {
+    foreignKey: 'dept_id',
+  });
+  
+Role.belongsTo(Department, {
     foreignKey: 'dept_id',
     onDelete: 'CASCADE',
   });
   
-Department.belongsTo(Role, {
-    foreignKey: 'dept_id',
-  });
-  
   //Link the role_id to the employee and manager models
-Role.hasOne(Employee, {
-    foreignKey: 'role_id'
+Role.hasMany(Employee, {
+    foreignKey: 'role_id',
+    onDelete: 'CASCADE',
   })
   
 Employee.belongsTo(Role, {
-    foreignKey: 'role_id' 
+    foreignKey: 'role_id',
   })
   
-Role.hasOne(Manager, {
-    foreignKey: 'role_id' 
+Role.hasMany(Manager, {
+    foreignKey: 'role_id' ,
+    onDelete: 'CASCADE',
   })
   
 Manager.belongsTo(Role, {
-    foreignKey: 'role_id' 
+    foreignKey: 'role_id' ,
   })
   
   //Create a link where the employee model imports an ID from the manager model
-  Manager.hasMany(Employee, {
+Manager.hasMany(Employee, {
     foreignKey: 'manager_id',
     onDelete: 'CASCADE',
   })
   
-  Employee.belongsTo(Manager, {
+Employee.belongsTo(Manager, {
       foreignKey: 'manager_id' 
     })
 
@@ -261,6 +263,7 @@ async function main() {
                 last_name: cut_last_name,} 
             })
             await employeeToUpdate.update({role_id: responses.role_id})
+
         }
         if(selection.action == "Exit"){
             loop = false;
