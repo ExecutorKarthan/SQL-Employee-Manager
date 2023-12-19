@@ -1,5 +1,4 @@
 const inquirer = require(`inquirer`);
-const mysql = require(`mysql2`);
 const sequelize = require('./config/Connection.js');
 const dbFunctions = require(`./utils/dbFunctions.js`)
 
@@ -141,7 +140,7 @@ async function main() {
                 salary: responses.salary, 
                 dept_id: responses.dept_id})
         }
-        if(selection.action == "Add an employee"){
+        if(selection.action == "Add an employee"){ 
             const responses = await inquirer
             .prompt([
                 {
@@ -171,8 +170,35 @@ async function main() {
                 manager_id: responses.manager_id
             })
         }
-        if(selection.action == "Update an employee"){
-            //change employee data
+        if(selection.action == "Update an employee role"){
+            var employees = [];
+            const rawData = await Employee.findAll();
+            for(let index = 0; index < rawData.length; index++){
+                const {first_name, last_name} = rawData[index].dataValues
+                let name = first_name + " " + last_name;
+                employees.push(name);
+            }
+            const responses = await inquirer
+            .prompt([
+                {
+                    type: "list",
+                    name: "full_name",
+                    message: "Which employee would you like to update?",
+                    choices: employees
+                },
+                {
+                    type: "input",
+                    name: "role_id",
+                    message: "What is the new role id for this employee?",
+                },
+            ])
+            const spaceSpot = responses.full_name.search(" ");
+            const cut_first_name = responses.full_name.slice(0, spaceSpot);
+            const cut_last_name = responses.full_name.slice(spaceSpot+1);
+            const employeeToUpdate = await Employee.findOne({ where: {first_name: cut_first_name, 
+                last_name: cut_last_name,} 
+            })
+            await employeeToUpdate.update({role_id: responses.role_id})
         }
         if(selection.action == "Exit"){
             loop = false;
