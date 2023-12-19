@@ -1,21 +1,19 @@
-function seedDB(dbCon){
-    dbCon.query(`SOURCE ../db/schema.sql`);
-    console.log(`DB created`);
-    dbCon.query(`SOURCE ../db/seeds.sql`);
-    console.log(`DB seeded.`);
+function formatTable(values, maxWidth){
+  var resultLine = []
+  for(let index = 0; index < values.length; index++){
+    let line = "";
+    values[index].forEach((attrib) => {
+      let attribString = attrib.toString();
+      while(attribString.length < maxWidth +5){
+        attribString = attribString + " ";
+      }
+      line = line + attribString;
+    });
+    resultLine.push(line)
+  }
+  resultLine.forEach((line) =>{
+    console.log(line)
+  })
 }
 
-function queryText(dbCon, dataTable){
-    dbCon.query(`SELECT * from ${dataTable}`)
-}
-
-function add(dbCon, tableName, values){
-    dbCon.query(`INSERT INTO ${tableName} (id, dept_name) VALUES(?, ?)`, values, (err, result) => {
-        if (err) {
-          console.log(err);
-        }
-        console.log(result);
-      });
-}
-
-module.exports ={seedDB, queryText}
+module.exports ={formatTable}

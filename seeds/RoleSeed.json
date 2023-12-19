@@ -1,0 +1,47 @@
+[
+    {
+        "title": "Repair Specialist",
+        "salary": 65000,
+        "dept_id": 1
+    },
+    {
+        "title": "Researcher",
+        "salary": 70000,
+        "dept_id": 2
+    },
+    {
+        "title": "Researcher",
+        "salary": 70000,
+        "dept_id": 3
+    },
+    {
+        "title": "Head of Maintenance",
+        "salary": 90000,
+        "dept_id": 1
+    },
+    {
+        "title": "Lead Scientist",
+        "salary": 90000,
+        "dept_id": 2
+    },
+    {
+        "title": "Lead Scientist",
+        "salary": 90000,
+        "dept_id": 3
+    },
+    {
+        "title": "Lead Scientist",
+        "salary": 90000,
+        "dept_id": 4
+    },
+    {
+        "title": "Finance Specialist",
+        "salary": 65000,
+        "dept_id": 5
+    },
+    {
+        "title": "Finance Lead",
+        "salary": 90000,
+        "dept_id": 5
+    }
+]
