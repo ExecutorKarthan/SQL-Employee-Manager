@@ -7,6 +7,44 @@ const Employee = require('./models/Employee');
 const Manager = require('./models/Manager');
 const Role = require('./models/Role');
 
+//Create a link where the role model imports an ID from the department model
+Role.hasOne(Department, {
+    foreignKey: 'dept_id',
+    onDelete: 'CASCADE',
+  });
+  
+Department.belongsTo(Role, {
+    foreignKey: 'dept_id',
+  });
+  
+  //Link the role_id to the employee and manager models
+Role.hasOne(Employee, {
+    foreignKey: 'role_id'
+  })
+  
+Employee.belongsTo(Role, {
+    foreignKey: 'role_id' 
+  })
+  
+Role.hasOne(Manager, {
+    foreignKey: 'role_id' 
+  })
+  
+Manager.belongsTo(Role, {
+    foreignKey: 'role_id' 
+  })
+  
+  //Create a link where the employee model imports an ID from the manager model
+  Manager.hasMany(Employee, {
+    foreignKey: 'manager_id',
+    onDelete: 'CASCADE',
+  })
+  
+  Employee.belongsTo(Manager, {
+      foreignKey: 'manager_id' 
+    })
+
+  
 async function main() {      
     
     await sequelize.sync({ 
@@ -62,7 +100,7 @@ async function main() {
             let maxWidth = 0;
             //List all roles
             const rawData = await Role.findAll(); 
-            var values = [["Role ID", "Title", "Salary", "Department ID"]]
+            var values = [["Title", "Role ID", "Department ID", "Salary"]]
             for(let index = 0; index < rawData.length; index++){
                 const {role_id, title, salary, dept_id} = rawData[index].dataValues
                 if(role_id.length > maxWidth){
@@ -77,7 +115,7 @@ async function main() {
                 if(dept_id.length > maxWidth){
                     maxWidth = dept_id.length;
                 }
-                values.push([role_id, title, salary, dept_id]);
+                values.push([title, role_id, dept_id, salary]);
             };
             maxWidth = maxWidth + 5;
             dbFunctions.formatTable(values, maxWidth);
@@ -85,10 +123,25 @@ async function main() {
         if(selection.action == "View all employees"){
             let maxWidth = 0;
             //List all roles
-            const rawData = await Employee.findAll(); 
-            var values = [["Employee ID", "First Name", "Last Name", "Role ID"]]
-            for(let index = 0; index < rawData.length; index++){
-                const {emp_id, first_name, last_name, role_id} = rawData[index].dataValues
+            const rawData = await Employee.findAll({
+                include: [
+                    {model: Role, attributes:['title', 'salary'], 
+                    include:[{model: Department, attributes: ['dept_name']}]}, 
+                    {model: Manager, attributes:['first_name', 'last_name']}
+                ]
+            }); 
+            var values = [["Employee ID", "First Name", "Last Name", "Job Title", "Department", "Salary", "Reporting Manager"]]
+            for(let index = 1; index < rawData.length; index++){
+                const {emp_id, first_name, last_name} = rawData[index].dataValues;
+                const {title, salary} = rawData[index].dataValues.role.dataValues;
+                const {dept_name} = rawData[index].dataValues.role.dataValues.department.dataValues;
+                let manager_name = "";
+                try{
+                    manager_name = rawData[index].dataValues.manager.dataValues.first_name + " " + rawData[index].dataValues.manager.dataValues.last_name;    
+                }
+                catch{
+                    manager_name = "Null";
+                }
                 if(emp_id.length > maxWidth){
                     maxWidth = emp_id.length;
                 }
@@ -98,12 +151,21 @@ async function main() {
                 if(last_name.length > maxWidth){
                     maxWidth = last_name.length;
                 }
-                if(role_id.length > maxWidth){
-                    maxWidth = role_id.length;
+                if(title.length > maxWidth){
+                    maxWidth = title.length;
                 }
-                values.push([emp_id, first_name, last_name, role_id]);
+                if(salary.length > maxWidth){
+                    maxWidth = salary.length;
+                }
+                if(dept_name.length > maxWidth){
+                    maxWidth = dept_name.length;
+                }
+                if(manager_name.length > maxWidth){
+                    maxWidth = manager_name.length;
+                }
+                values.push([emp_id, first_name, last_name, title, dept_name, salary, manager_name]);
             };
-            maxWidth = maxWidth + 5;
+            maxWidth = maxWidth + 4;
             dbFunctions.formatTable(values, maxWidth);
         }
         if(selection.action == "Add a department"){

@@ -4,7 +4,7 @@ function formatTable(values, maxWidth){
     let line = "";
     values[index].forEach((attrib) => {
       let attribString = attrib.toString();
-      while(attribString.length < maxWidth +5){
+      while(attribString.length < maxWidth +1){
         attribString = attribString + " ";
       }
       line = line + attribString;
