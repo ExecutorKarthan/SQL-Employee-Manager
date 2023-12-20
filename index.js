@@ -248,6 +248,7 @@ async function main() {
                 dept_id: deptMap.get(responses.dept)})
         }
         //Add a new employee to the database
+        if(selection.action == "Add an employee"){ 
             //Create a list of roles to select from and store their IDs
             var roles = [];
             var role_idVals = [];
@@ -262,7 +263,21 @@ async function main() {
             for(let index = 0; index < roles.length; index++){
                 roleMap.set(roles[index], role_idVals[index])
             }
-        if(selection.action == "Add an employee"){ 
+            //Create a list of managers to select from and store their IDs
+            var managers = [];
+            var manager_idVals = [];
+            const rawManagers = await Manager.findAll();
+            for(let index = 0; index < rawManagers.length; index++){
+                const {first_name, last_name, manager_id} = rawManagers[index].dataValues;
+                managers.push(first_name + " " + last_name);
+                manager_idVals.push(manager_id);
+            }
+            //Create a map for easy reference
+            const managerMap = new Map();
+            for(let index = 0; index < managers.length; index++){
+                managerMap.set(managers[index], manager_idVals[index])
+            }
+            console.log(managerMap)
             //Gather user information for the new employee
             const responses = await inquirer
             .prompt([
@@ -283,16 +298,17 @@ async function main() {
                 choices: roles,
                 },
                 {
-                type: "input",
-                name: "manager_id",
-                message: "What is the manager id for this employee?",
+                type: "list",
+                name: "manager",
+                message: "Who is the manager for this employee?",
+                choices: managers,
                 }
             ])
             //Create the new employee and add it to the employee table
             await Employee.create({first_name: responses.first_name, 
                 last_name: responses.last_name, 
                 role_id: roleMap.get(responses.role),
-                manager_id: responses.manager_id
+                manager_id: managerMap.get(responses.manager),
             })
         }
 
