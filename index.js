@@ -277,7 +277,6 @@ async function main() {
             for(let index = 0; index < managers.length; index++){
                 managerMap.set(managers[index], manager_idVals[index])
             }
-            console.log(managerMap)
             //Gather user information for the new employee
             const responses = await inquirer
             .prompt([
