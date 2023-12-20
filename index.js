@@ -111,11 +111,14 @@ async function main() {
         if(selection.action == "View all roles"){
             let maxWidth = 0;
             //Pull all role data table values
-            const rawData = await Role.findAll(); 
-            var values = [["Title", "Role ID", "Department ID", "Salary"]]
+            const rawData = await Role.findAll({
+                include:[{model: Department, attributes: ['dept_name']}]
+            }); 
+            var values = [["Title", "Role ID", "Department", "Salary"]]
             //Pull data from the dept table, determine its size and add it to an array for printing
             for(let index = 0; index < rawData.length; index++){
-                const {role_id, title, salary, dept_id} = rawData[index].dataValues
+                const {role_id, title, salary} = rawData[index].dataValues
+                const dept_name = rawData[index].dataValues.department.dataValues.dept_name
                 if(role_id.length > maxWidth){
                     maxWidth = role_id.length;
                 }
@@ -125,10 +128,10 @@ async function main() {
                 if(salary.length > maxWidth){
                     maxWidth = salary.length;
                 }
-                if(dept_id.length > maxWidth){
-                    maxWidth = dept_id.length;
+                if(dept_name.length > maxWidth){
+                    maxWidth = dept_name.length;
                 }
-                values.push([title, role_id, dept_id, salary]);
+                values.push([title, role_id, dept_name, salary]);
             };
             //Pass the value array and the max width to a function for formatting and console logging
             maxWidth = maxWidth + 5;
@@ -205,6 +208,20 @@ async function main() {
 
         //Add a new role to the database
         if(selection.action == "Add a role"){
+             //Create a list of departments to select from and store their IDs
+             var departments = [];
+             var dept_idVals = []
+             const rawData = await Department.findAll();
+             for(let index = 0; index < rawData.length; index++){
+                 const {dept_name, dept_id} = rawData[index].dataValues
+                 departments.push(dept_name);
+                 dept_idVals.push(dept_id)
+             }
+            //Create a map for easy reference
+            const deptMap = new Map();
+            for(let index = 0; index < departments.length; index++){
+                deptMap.set(departments[index], dept_idVals[index])
+            }
             //Gather user information for the new role
             const responses = await inquirer
             .prompt([
@@ -219,18 +236,32 @@ async function main() {
                 message: "What is the salary of this role?",
                 },
                 {
-                type: "input",
-                name: "dept_id",
-                message: "What is the department id for this role?",
+                type: "list",
+                name: "dept",
+                message: "What department is this role in?",
+                choices: departments,
                 },
             ])
             //Create the new role and add it to the role table
             await Role.create({title: responses.title, 
                 salary: responses.salary, 
-                dept_id: responses.dept_id})
+                dept_id: deptMap.get(responses.dept)})
         }
-
         //Add a new employee to the database
+            //Create a list of roles to select from and store their IDs
+            var roles = [];
+            var role_idVals = [];
+            const rawData = await Role.findAll();
+            for(let index = 0; index < rawData.length; index++){
+                const {role_id, title} = rawData[index].dataValues;
+                roles.push(title);
+                role_idVals.push(role_id);
+            }
+            //Create a map for easy reference
+            const roleMap = new Map();
+            for(let index = 0; index < roles.length; index++){
+                roleMap.set(roles[index], role_idVals[index])
+            }
         if(selection.action == "Add an employee"){ 
             //Gather user information for the new employee
             const responses = await inquirer
@@ -246,9 +277,10 @@ async function main() {
                 message: "What is the last name of this employee?",
                 },
                 {
-                type: "input",
-                name: "role_id",
-                message: "What is the role id for this employee?",
+                type: "list",
+                name: "role",
+                message: "What is the role for this employee?",
+                choices: roles,
                 },
                 {
                 type: "input",
@@ -259,7 +291,7 @@ async function main() {
             //Create the new employee and add it to the employee table
             await Employee.create({first_name: responses.first_name, 
                 last_name: responses.last_name, 
-                role_id: responses.role_id,
+                role_id: roleMap.get(responses.role),
                 manager_id: responses.manager_id
             })
         }
@@ -274,6 +306,20 @@ async function main() {
                 let name = first_name + " " + last_name;
                 employees.push(name);
             }
+            //Create a list of roles to select from and store their IDs
+            var roles = [];
+            var role_idVals = [];
+            const roleData = await Role.findAll();
+            for(let index = 0; index < roleData.length; index++){
+                const {role_id, title} = roleData[index].dataValues;
+                roles.push(title);
+                role_idVals.push(role_id);
+            }
+             //Create a map for easy reference
+            const roleMap = new Map();
+            for(let index = 0; index < roles.length; index++){
+                roleMap.set(roles[index], role_idVals[index])
+            }
             //Determine which employee needs to have a change of role
             const responses = await inquirer
             .prompt([
@@ -284,9 +330,10 @@ async function main() {
                     choices: employees
                 },
                 {
-                    type: "input",
-                    name: "role_id",
-                    message: "What is the new role id for this employee?",
+                    type: "list",
+                    name: "role",
+                    message: "What is the new role for this employee?",
+                    choices: roles,
                 },
             ])
             //Parse the selected name into two variables
@@ -298,7 +345,7 @@ async function main() {
                 last_name: cut_last_name,} 
             })
             //Update the selected employee's role
-            await employeeToUpdate.update({role_id: responses.role_id})
+            await employeeToUpdate.update({role_id: roleMap.get(responses.role)})
         }
         
         //Terminates the loop if selected
