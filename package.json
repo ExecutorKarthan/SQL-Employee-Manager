@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ExecutorKarthan/SQL-Employee-Tracker.git"
+    "url": "git+https://github.com/ExecutorKarthan/SQL-Employee-Manager.git"
   },
   "author": "Alex Messina",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ExecutorKarthan/SQL-Employee-Tracker/issues"
+    "url": "https://github.com/ExecutorKarthan/SQL-Employee-Manager/issues"
   },
-  "homepage": "https://github.com/ExecutorKarthan/SQL-Employee-Tracker#readme",
+  "homepage": "https://github.com/ExecutorKarthan/SQL-Employee-Manager#readme",
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

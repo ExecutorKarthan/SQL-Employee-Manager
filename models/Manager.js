@@ -1,6 +1,6 @@
 //Import needed files for sequelize to work and to connect to the database
 const { Model, DataTypes} = require('sequelize');
-const sequelize = require('../config/Connection');
+const sequelize = require('../config/connection');
 
 //Allow Manager to use the Model class features
 class Manager extends Model {}

@@ -1,6 +1,6 @@
 //Import needed files for sequelize to work and to connect to the database
 const { Model, DataTypes} = require('sequelize');
-const sequelize = require('../config/Connection');
+const sequelize = require('../config/connection');
 
 //Allow Role to use the Model class features
 class Role extends Model {}

@@ -1,6 +1,6 @@
 //Import required libraries for code functionality
 const inquirer = require(`inquirer`);
-const sequelize = require('./config/Connection.js');
+const sequelize = require('./config/connection.js');
 const dbFunctions = require(`./utils/dbFunctions.js`)
 
 //Import data models

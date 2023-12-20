@@ -1,5 +1,5 @@
 //Import configuration for accessing the database
-const sequelize = require('../config/Connection');
+const sequelize = require('../config/connection');
 
 //Import models for table use
 const Department = require('../models/Department');
