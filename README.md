@@ -18,9 +18,9 @@ This project requires the following packages to function:
 ## Usage
 Once installed, the user needs to navigate to the folder with the '''index.js''' file in their code editor or terminal. Once there, the user needs to run '''node index.js''' in the terminal to begin the prompt section. The user just needs to make their selections, then follow the information requests for information. All information entered will be the string form of an alphanumeric character. The user does need to enter either ONLY digits or ONLY letters, depending on the prompt. 
 
-A GIF of the project can be seen ![SQL Employee Manager Demo Gif](./assets/SQL-Manager-Demo.gif) 
+A GIF of the project can be seen ![SQL Manager Demo Gif](./assets/SQL-Manager-Demo.gif) 
 <br>
-A video walkthrough of the proper commands and their output can be found <a href="./assets/SQL-Manager-Demo.mp4"> here</a>.
+A video walkthrough of the proper commands and their output can be found <a href="./assets/SQL-ManagerDemo.mp4"> here</a>.
 
 ## License
 This product is protected by a [MIT License](http://choosealicense.com/licenses/mit).
