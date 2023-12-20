@@ -1,8 +1,11 @@
+//Import needed files for sequelize to work and to connect to the database
 const { Model, DataTypes} = require('sequelize');
 const sequelize = require('../config/Connection');
 
+//Allow Role to use the Model class features
 class Role extends Model {}
 
+//Define the table and its columns/attributes
 Role.init(
   {
     role_id:{
@@ -33,4 +36,5 @@ Role.init(
   }
 );
 
+//Export the model for use
 module.exports = Role;

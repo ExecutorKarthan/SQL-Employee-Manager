@@ -1,8 +1,11 @@
+//Import needed files for sequelize to work and to connect to the database
 const { Model, DataTypes} = require('sequelize');
 const sequelize = require('../config/Connection');
 
+//Allow Employee to use the Model class features
 class Employee extends Model {}
 
+//Define the table and its columns/attributes
 Employee.init(
   {
     emp_id:{
@@ -36,4 +39,5 @@ Employee.init(
   }
 );
 
+//Export the model for use
 module.exports = Employee;
