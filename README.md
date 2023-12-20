@@ -12,13 +12,13 @@ The second issue was actually setting up the database and seeding it. I created 
 This project requires the following packages to function:
 1) "dotenv" which can be found at [https://www.npmjs.com/package/dotenv](https://www.npmjs.com/package/dotenv)
 2) "sequelize" which can be found at [https://sequelize.org/docs/v6/](https://sequelize.org/docs/v6/)
-3) "inquirer" which can be found at [Inquirer.js](https://www.npmjs.com/package/inquirer/v/8.2.4) .
+3) "inquirer" which can be found at [https://www.npmjs.com/package/inquirer/v/8.2.4](https://www.npmjs.com/package/inquirer/v/8.2.4) .
 
 
 ## Usage
 Once installed, the user needs to navigate to the folder with the '''index.js''' file in their code editor or terminal. Once there, the user needs to run '''node index.js''' in the terminal to begin the prompt section. The user just needs to make their selections, then follow the information requests for information. All information entered will be the string form of an alphanumeric character. The user does need to enter either ONLY digits or ONLY letters, depending on the prompt. 
 
-A GIF of the project can be seen ![SVG Log Maker Demo Gif](./assets/SQL%20Manager%20Demo.gif) 
+A GIF of the project can be seen ![SQL Employee Manager Demo Gif](./assets/SQL%20Manager%20Demo.gif) 
 <br>
 A video walkthrough of the proper commands and their output can be found <a href="./assets/SQL Manager Demo.mp4"> here</a>.
 
